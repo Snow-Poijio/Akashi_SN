@@ -1,7 +1,7 @@
 <?php
 require("common.php");
 session_start();
-
+echo 'test';
 /*エラー判定(直接アクセス)*/
 if(!isset($_POST['userid']) && !isset($_SESSION['userid'])){
   header("HTTP/1.1 301 Moved Permanently");
