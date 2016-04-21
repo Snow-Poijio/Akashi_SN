@@ -2,14 +2,21 @@
 require("common.php");
 session_start();
 
-$userid = userid_get($_POST['userid']);
-
-if(!isset($userid)){
+/*エラー判定(直接アクセス)*/
+if(!isset($_POST['userid']) && !isset($_SESSION['userid'])){
   header("HTTP/1.1 301 Moved Permanently");
   header("Location: https://akashisn.azurewebsites.net/?article=4");
   exit();
 }
-/*エラー判定*/
+
+if(isset($_SESSION['userid'])){
+  $userid = $_SESSION['userid'];
+}
+if(isset($_POST['userid'])){
+  $userid = userid_get($_POST['userid']);
+}
+
+/*エラー判定(未ログイン)*/
   $error = rate_get($userid);
   if(!isset($error)){
     header("HTTP/1.1 301 Moved Permanently");
