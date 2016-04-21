@@ -1,0 +1,78 @@
+<header class="entry-header">
+    <h1 class="entry-title">CHUNITHM Rate Calculator</h1>
+</header>
+<div class="entry-content">
+    <h3>更新履歴</h3>
+    <hr> 自動では更新しないので更新のたびにインストールし直してください
+    <br> 更新はtwitterでつぶやくようにします。
+    <br>
+    <br> 2016-3-27 ver1.0   公開
+    <br> 2016-4-8  ver1.0.1 新曲追加
+    <br> 2016-4-12 ver1.1   コードを更新しました<br><b style='color:red;font-size:25px;'>以前にインストールした方は、再インストールをしてください</b><br>
+    <h3>このツールについて</h3>
+    <hr>
+    <br>
+    チュウニズムのレートを計算するものです。
+    <ul>
+        <li>楽曲別レートを計算します</li>
+        <li>最大レートを算出します
+            <br>(最大レートはBEST枠で一番レートが高いものを10回連続で出したものとして計算した値です。)</li>
+    </ul>
+    レートの仕組みについては<a href="http://d.hatena.ne.jp/risette14/" target=_brunk>リゼット(14新)推奨日記</a>に書いてあります。
+    <br> チュウニズムプラス対応です。
+    <br> 製作者(
+    <a href="https://twitter.com/Akashi_SN">@Akashi_SN</a>)
+    <br> 計算方法や譜面定数は
+    <a href="https://twitter.com/capue">@capue</a>さんほかによるものを参考にしました。ありがとうございました。
+    <h3>対象譜面</h3>
+    <hr> レベル11以上の楽曲が対象です。
+    
+    <h3>注意</h3>
+    <hr>
+    <h4><u>あくまで自己責任で使用してください。このツールを使用したことで起こったトラブルに制作者は責任を持ちません</u></h4>
+    <h3>使い方</h3>
+    <hr>
+    <ol>
+        <li>
+            <h4>インストール</h4>
+            <ol>
+                <li><a href='javascript:(function(){if(!location.href.match(/^https:\/\/chunithm-net.com/)){alert(&quot;CHUNITHM NETを開いた状態でしてください&quot;);throw Error();}var html = &#039;&lt;form method=&quot;post&quot; action=&quot;https://akashisn.azurewebsites.net/chunithm/chunithm.php&quot; id=&quot;postjump&quot; target=_brunk style=&quot;display: none;&quot;&gt;&lt;input type=&quot;hidden&quot; name=&quot;userid&quot; value=&quot;&#039; + document.cookie + &#039;&quot; &gt;&lt;/form&gt;&#039;;$(&quot;body&quot;).append(html);$(&#039;#postjump&#039;).submit();$(&#039;#postjump&#039;).remove();})(document);'>CHUNITHM Rate Calculator</a>
+                <br> 上のリンクをわかりやすい名前でブックマークに登録。<br>※IE系でも動作確認済み<br></li>
+                <li><p>または、このコードをブックマークに登録</p>
+                    <pre>javascript:(function(){
+    if (!location.href.match(/^https:\/\/chunithm-net.com/)) {
+        alert(&quot;CHUNITHM NETを開いた状態でしてください&quot;);
+        throw Error();
+    }
+    var html = &#039;&lt;form method=&quot;post&quot; action=&quot;https://akashisn.azurewebsites.net/chunithm/chunithm.php&quot; id=&quot;postjump&quot; target=_brunk style=&quot;display: none;&quot;&gt;&lt;input type=&quot;hidden&quot; name=&quot;userid&quot; value=&quot;&#039; + document.cookie + &#039;&quot; &gt;&lt;/form&gt;&#039;;
+    $(&quot;body&quot;).append(html);
+    $(&#039;#postjump&#039;).submit();
+    $(&#039;#postjump&#039;).remove();
+})(document);</pre>
+                </li>
+            </ol> 
+        </li>
+        <li>
+            <h4>実行</h4>
+            <ol>
+                <li>CHUNITHM NETにログイン</li><br>
+                <li>利用権があることを確認</li><br>
+                <li>CHUNITHM NET の画面を出したまま、先ほどのブックマークを開く</li><br>
+                <ol>
+                    <li>iPhoneの場合はお気に入りから呼び出して使えます。</li><br>
+                    <li>Androidの場合はURLのところにブックマークに登録した名前を打ち込みjavascript: (fanction(d,s))となっているものを選びます</li>
+                </ol>
+            </ol>
+        </li>
+    </ol>
+    <img class="screen" src="/common/images/Screenshot_20160402-234125.png" width="300"><br>
+    <b>※しばらく読み込みに時間がかかります</b>
+    <h3>スクリーンショット</h3>
+    <hr>
+    <img class="screen" src="/common/images/Screenshot_20160402-235919.png" width="300">
+    <img class="screen" src="/common/images/Screenshot_20160410-235851.png" width="300">
+    <br>
+    <br>
+    <hr> 何かありましたら
+    <a href="https://twitter.com/Akashi_SN">@Akashi_SN</a>の方にお願いします
+</div>

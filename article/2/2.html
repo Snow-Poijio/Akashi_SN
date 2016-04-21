@@ -1,0 +1,123 @@
+	<header class="entry-header">
+		<h1 class="entry-title">CpawCTF write up</h1>
+	</header>
+	<div class="entry-content">
+		<p><a href="https://ctf.cpaw.site/index.php" target="_blank">CpawCTF</a>をやってみたので</p>
+		<p>出来ているやつからwrite upを書いていきます</p>
+		<p>出来次第追加していきます</p>
+		<h3>Q1</h3>
+		<p>テスト問題<br />
+		書いてあるやつを提出</p>
+		<hr />
+		<h3>Q6</h3>
+		<p>シーザー暗号なので<br />
+		<a href="http://www.rot-n.com/" target="_blank">http://www.rot-n.com/</a>ここでcpaw{}になるやつを探す<br />
+		rot23で変換</p>
+		<hr />
+		<h3>Q7</h3>
+		<p>fileコマンドをたたくと32bitのelfだとわかるのでlinuxで実行</p>
+		<hr />
+		<h3>Q8</h3>
+		<p>fileコマンドをたたくとmicrosoftのwordのファイルだとわかる<br />
+		拡張子を.docにして開く</p>
+		<h3>Q9</h3>
+		<p>ページのソースを表示する</p>
+		<pre class="brush:html">&lt;meta name="keyword" content="ctf,flag"&gt;
+&lt;meta name="description" content="flag is cpaw{9216ddf84851f15a46662eb04759d2bebacac666}"&gt;
+&lt;meta name="author" content="takahoyo"&gt;</pre>
+		<hr />
+		<h3>Q10</h3>
+		<p>画像のEXIF情報を見る</p>
+		<hr />
+		<h3>Q11</h3>
+		<p>wiresharkで開く</p>
+		<hr />
+		<h3>Q12</h3>
+		<p>google検索</p>
+		<hr />
+		<h3>Q14</h3>
+		<p>C++のsortを使う</p>
+		<pre class="brush:cpp;">#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+int main (){
+	int a[72]={15,1,93,52,66,31,87,0,42,77,46,24,99,10,19,36,27,4,58,76,2,81,50,102,33,94,20,14,80,82,49,41,12,143,121,7,111,100,60,55,108,34,150,103,109,130,25,54,57,159,136,110,3,167,119,72,18,151,105,171,160,144,85,201,193,188,190,146,210,211,63,207};
+	sort(a,a+72, greater&lt;int&gt;());
+	for(int i=0;i&lt;72;i++)
+		cout&lt;&lt;a[i];
+	cout&lt;&lt;endl;
+	return 0;
+}</pre>
+		<hr />
+		<h3>Q15</h3>
+		<p>Fiddlerなどでキャプチャー</p>
+		<pre class="brush:plain">HTTP/1.1 302 Found
+	Server: nginx
+	Date: Sat, 30 Jan 2016 15:25:48 GMT
+	Content-Type: text/html; charset=UTF-8
+	Content-Length: 0
+	Connection: keep-alive
+	X-Flag: cpaw{4re_y0u_1ook1ng_http_h3ader?}
+	Location: http://q9.ctf.cpaw.site
+	</pre>
+		<hr />
+		<h3>Q16</h3>
+		<p>NetworkMinerで開き<br />
+		ファイルを開き</p>
+		<pre class="brush:plain" title="index.html">&lt;/head&gt;
+&lt;body&gt;
+	&lt;div class="container-narrow"&gt;
+		&lt;div class="masthead"&gt;
+        	&lt;h3 class="muted"&gt;Capture The Flag&lt;/h3&gt;
+		    &lt;/div&gt;
+				&lt;hr&gt;
+	      		&lt;div class="jumbotron"&gt;
+		        	&lt;h1&gt;Capture The Flag&lt;/h1&gt;
+			        &lt;p class="lead"&gt;フラグが欲しかったら下のボタンを押すんだ！！&lt;/p&gt;
+		    	    &lt;p&gt;&lt;img id="image1" class="img-rounded" id="image1" src="./img/image.jpg"/&gt;&lt;/p&gt;
+		        	&lt;p&gt;&lt;a class="btn btn-large btn-success" onclick="OnButtonClick();"&gt;ボタン&lt;/a&gt;&lt;/p&gt;
+				    &lt;/div&gt;
+			      &lt;hr&gt;
+			      &lt;div class="footer"&gt;
+		        &lt;p&gt;© 2015 takahoyo&lt;/p&gt;
+		      &lt;/div&gt;
+		    &lt;/div&gt; 
+	    &lt;script src="./js/button2.js"&gt;&lt;/script&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</pre>
+		<p>これのjsを読んでいるところを</p>
+		<pre class="brush:plain">&lt;script type="text/javascript"&gt;
+		      button2.jsの内容
+		&lt;/script&gt;</pre>
+		<p>とする</p>
+		<h3>Q17</h3>
+		<p>検索すると<a href="https://twitter.com/_n4nu_/status/653601102441525248" target="_blank">https://twitter.com/_n4nu_/status/653601102441525248</a><br />
+		これがヒットする</p>
+		<hr />
+		<h3>Q18</h3>
+		<p>fileコマンドをたたくとtcpdump capture fileと出たがwiresharkで開くことが出来なかった<br />
+		バイナリエディタで開くとlovelive!がいっぱいあるその中に違うやつがあるので<br />
+		lovelive!に含まれるやつをすべて空白に置換すると<br />
+		CCCPPPAAAWWW{{{MMMGGGRRREEEPPP}}}<br />
+		3文字を1文字にする</p>
+		<hr />
+		<h3>Q22</h3>
+		<pre class="brush:sql">SELECT * FROM  palloc_home;</pre>
+		<p>これを入力する</p>
+		<hr />
+		<h3>Q28</h3>
+		<p>Wiresharkで開くとtcpとftpでの通信が見られる<br />
+		ftpにログインできている<br />
+		USER cpaw_user<br />
+		PASS 5f4dcc3b5aa765d61d8327deb882cf99</p>
+		<p>でftpでログインするflagは同じディレクトリに隠しファイルである</p>
+		<hr />
+		<h3>Q24</h3>
+		<p>Q22で出てきたurlに行き</p>
+		<pre class="brush:sql">'OR 1=1 --</pre>
+		<p>これを入力する</p>
+		<hr />
+		<p>まだまだ・・・</p>
+	</div>
