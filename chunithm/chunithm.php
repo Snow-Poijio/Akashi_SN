@@ -10,12 +10,12 @@ if(!isset($userid)){
   exit();
 }
 /*エラー判定*/
-  /*$error = rate_get($userid);
+  $error = rate_get($userid);
   if(!isset($error)){
     header("HTTP/1.1 301 Moved Permanently");
     header("Location: https://akashisn.azurewebsites.net/chunithm/error.html");
     exit();
-  }*/
+  }
 $_SESSION['userid'] = $userid;
 ?>
 <!DOCTYPE html>
